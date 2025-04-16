@@ -8,6 +8,20 @@ extends Area2D
 
 var can_shoot = true
 
+signal died
+signal shield_changed
+
+@export var max_shield = 10
+var shield = max_shield:
+	set = set_shield
+
+func set_shield(value):
+	shield = min(max_shield, value)
+	shield_changed.emit(max_shield, shield)
+	if shield <= 0:
+		hide()
+		died.emit()
+
 func start():
 	position = Vector2(screensize.x / 2, screensize.y - 64)
 	$GunCooldown.wait_time = cooldown
@@ -56,3 +70,9 @@ func _process(delta: float) -> void:
 
 func _on_gun_cooldown_timeout() -> void:
 	can_shoot = true
+
+
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("enemies"):
+		area.explode()
+		shield -= max_shield / 2

@@ -4,6 +4,7 @@ signal died
 
 var start_pos = Vector2.ZERO
 var speed = 0
+var bullet_scene = preload("res://enemy_bullet.tscn")
 
 @onready var screensize = self.get_viewport_rect().size
 
@@ -38,5 +39,8 @@ func _on_move_timer_timeout() -> void:
 	speed = randf_range(75, 100)
 
 func _on_shoot_timer_timeout() -> void:
+	var b = bullet_scene.instantiate()
+	self.get_tree().root.add_child(b)
+	b.start(position)
 	$ShootTimer.wait_time = randf_range(4, 20)
 	$ShootTimer.start()
