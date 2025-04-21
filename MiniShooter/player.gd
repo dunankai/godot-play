@@ -24,6 +24,8 @@ func set_shield(value):
 
 func start():
 	position = Vector2(screensize.x / 2, screensize.y - 64)
+	shield = max_shield
+	self.show()
 	$GunCooldown.wait_time = cooldown
 
 func shoot():
@@ -37,7 +39,7 @@ func shoot():
 	b.start(position + Vector2(0, -8))
 
 func _ready():
-	start()
+	position = Vector2(screensize.x / 2, screensize.y - 64)
 
 func _process(delta: float) -> void:
 	var input = Input.get_vector("left", "right", "up", "down")
